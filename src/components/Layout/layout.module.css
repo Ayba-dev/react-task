@@ -1,0 +1,10 @@
+.styles {
+    display: flex;
+    flex-direction: column;
+    background: black;
+}
+
+.wrapper {
+    display: flex;
+    gap: 30px;
+}

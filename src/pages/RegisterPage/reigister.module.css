@@ -1,0 +1,22 @@
+.register {
+    padding: 10px;
+    background: aliceblue;
+    margin:  0 auto;
+    width: 600px;
+    height: 500px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+}
+
+input {
+    width: 200px;
+}
+
+.h2 {
+    text-align: center;
+}
