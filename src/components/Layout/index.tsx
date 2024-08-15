@@ -1,4 +1,3 @@
-import React,  from 'react';
 import {Outlet} from "@mui/icons-material";
 import SearchAppBar from "../Header";
 import styles from './layout.module.css'

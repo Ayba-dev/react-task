@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useState} from 'react';
-import {IUser} from "../utils/types/types.ts";
-
+import {INotes, IUser} from "../utils/types/types.ts";
+import {v4} from 'uuid';
 
 type ContainerProps = {
     children: React.ReactNode
@@ -8,8 +8,12 @@ type ContainerProps = {
 
 interface TypeHooks {
     user: null;
-    register: (user: IUser, callback : () => void) => void;
+    title: string;
+    setTitle: React.Dispatch<React.SetStateAction<string>>
+    register: (user: IUser, callback: () => void) => void;
     setUser: React.Dispatch<React.SetStateAction<null>>;
+    addItem: (title: string) => void;
+    notes: INotes[]
 }
 
 
@@ -17,6 +21,8 @@ export const CustomContext = createContext<TypeHooks | undefined>(undefined);
 export const Context = (props: ContainerProps) => {
 
     const [user, setUser] = useState(null);
+    const [title, setTitle] = useState('');
+    const [notes, setNotes] = useState<INotes[]>([])
 
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -26,26 +32,38 @@ export const Context = (props: ContainerProps) => {
     }
 
 
-    const deleteNote = (id: string) => {
-        setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
-        setSelectedNoteId(null);
-    };
+    const addItem = (title: string) => {
+        setNotes([...notes, {
+            id: v4(),
+            title: title,
+            date: new Date().toLocaleTimeString()
+        }])
+        setTitle('')
+    }
+    // const deleteNote = (id: string) => {
+    //     setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
+    //     setSelectedNoteId(null);
+    // };
 
-    const updateNote = (id: string, content: string) => {
-        setNotes(prevNotes =>
-            prevNotes.map(note =>
-                note.id === id ? {...note, content} : note
-            )
-        );
-    };
+    // const updateNote = (id: string, content: string) => {
+    //     setNotes(prevNotes =>
+    //         prevNotes.map(note =>
+    //             note.id === id ? {...note, content} : note
+    //         )
+    //     );
+    // };
 
 
     const value = {
         user,
         register,
-        updateNote,
-        deleteNote,
-        setUser
+        // updateNote,
+        // deleteNote,
+        setUser,
+        title,
+        setTitle,
+        addItem,
+        notes
     }
     return (
         <CustomContext.Provider value={value}>

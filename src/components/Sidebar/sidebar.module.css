@@ -1,5 +1,28 @@
 .sidebar {
-    background: black;
     width: 300px;
     height: 650px;
+    border-right: 2px solid #00000030;
+}
+
+.wrapper {
+    /*margin-top: 5px;*/
+    display: flex;
+}
+
+
+.link {
+    padding: 10px;
+    font-size: 18px;
+    border-bottom: 1px solid white;
+}
+
+.time {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.span {
+    color: gray;
+    font-size: 14px;
 }
