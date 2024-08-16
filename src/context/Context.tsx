@@ -13,7 +13,10 @@ interface TypeHooks {
     register: (user: IUser, callback: () => void) => void;
     setUser: React.Dispatch<React.SetStateAction<null>>;
     addItem: (title: string) => void;
-    notes: INotes[]
+    notes: INotes[];
+    getItem: INotes;
+    setGetItem: React.Dispatch<React.SetStateAction<null>>
+
 }
 
 
@@ -22,7 +25,8 @@ export const Context = (props: ContainerProps) => {
 
     const [user, setUser] = useState(null);
     const [title, setTitle] = useState('');
-    const [notes, setNotes] = useState<INotes[]>([])
+    const [notes, setNotes] = useState<INotes[]>([]);
+    const [getItem, setGetItem] = useState(null)
 
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
@@ -40,6 +44,15 @@ export const Context = (props: ContainerProps) => {
         }])
         setTitle('')
     }
+
+    const getElement = (id: string) => {
+        const  element   = notes.find((item) => item.id === id)
+        if (element) {
+            setGetItem(element)
+        }
+    }
+
+
     // const deleteNote = (id: string) => {
     //     setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
     //     setSelectedNoteId(null);
@@ -63,7 +76,10 @@ export const Context = (props: ContainerProps) => {
         title,
         setTitle,
         addItem,
-        notes
+        notes,
+        getItem,
+        setGetItem,
+        getElement
     }
     return (
         <CustomContext.Provider value={value}>

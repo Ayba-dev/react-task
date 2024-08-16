@@ -2,10 +2,17 @@ import React from 'react';
 import {Button, List, TextField} from "@mui/material";
 import {useNotes} from "../../context/Context.tsx";
 import styles from './sidebar.module.css'
+import {Link} from "react-router-dom";
+import {INotes} from "../../utils/types/types.ts";
 
 const Sidebar = () => {
 
-    const {title, setTitle, addItem, notes} = useNotes();
+    const {title, setTitle, addItem, notes, getElement, getItem } = useNotes();
+
+    const clickOnElement = (id: string) => {
+        return  getElement(id)
+        console.log(getItem)
+    }
 
     return (
         <div className={styles.sidebar}>
@@ -17,6 +24,7 @@ const Sidebar = () => {
                     fullWidth
                 />
                 <Button
+                    disabled={title == ''}
                     onClick={() => addItem(title)}
                     color={'success'}
                     variant="contained"
@@ -27,17 +35,12 @@ const Sidebar = () => {
             <List spacing="sm">
                 <ul className={styles.list}>
                     {notes.map((item) => (
-                        <div className={styles.time}>
+                        <Link onClick={() => clickOnElement(item.id)} key={item.id} to={`/${item.id}`} className={styles.time}>
                             <span className={styles.span}>{item.date}</span>
                             <li className={styles.link}>{item.title}</li>
-                        </div>
+                        </Link>
                     ))}
                 </ul>
-                {/*{notes.map(note => (*/}
-                {/*    <List.Item key={note.id} onClick={() => setSelectedNote(note.id)}>*/}
-                {/*        {note.title}*/}
-                {/*    </List.Item>*/}
-                {/*))}*/}
             </List>
         </div>
     );

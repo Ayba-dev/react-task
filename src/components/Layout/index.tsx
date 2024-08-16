@@ -1,4 +1,4 @@
-import {Outlet} from "@mui/icons-material";
+import {Outlet} from "react-router-dom";
 import SearchAppBar from "../Header";
 import styles from './layout.module.css'
 import Sidebar from "../Sidebar";
