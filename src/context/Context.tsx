@@ -16,7 +16,9 @@ interface TypeHooks {
     notes: INotes[];
     getItem: INotes;
     setGetItem: React.Dispatch<React.SetStateAction<null>>
-
+    deleteItem: (id: string) => void;
+    openModal : boolean,
+    setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 
@@ -24,8 +26,9 @@ export const CustomContext = createContext<TypeHooks | undefined>(undefined);
 export const Context = (props: ContainerProps) => {
 
     const [user, setUser] = useState(null);
+    const [openModal, setOpenModal] = React.useState(false);
     const [title, setTitle] = useState('');
-    const [notes, setNotes] = useState<INotes[]>([]);
+    const [notes, setNotes] = useState<INotes[]>(JSON.parse(localStorage.getItem('title')) || []);
     const [getItem, setGetItem] = useState(null)
 
 
@@ -37,26 +40,27 @@ export const Context = (props: ContainerProps) => {
 
 
     const addItem = (title: string) => {
-        setNotes([...notes, {
+        const newItem = {
             id: v4(),
             title: title,
             date: new Date().toLocaleTimeString()
-        }])
+        }
+        setNotes([...notes, newItem])
+        localStorage.setItem('title', JSON.stringify([...notes, newItem]))
         setTitle('')
     }
 
     const getElement = (id: string) => {
-        const  element   = notes.find((item) => item.id === id)
+        const element = notes.find((item) => item.id === id)
         if (element) {
             setGetItem(element)
         }
     }
-
-
-    // const deleteNote = (id: string) => {
-    //     setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
-    //     setSelectedNoteId(null);
-    // };
+    const deleteItem = (id) => {
+        setNotes(prevState => prevState.filter((item) => item.id !== id))
+        setGetItem(null)
+        localStorage.removeItem('title')
+    }
 
     // const updateNote = (id: string, content: string) => {
     //     setNotes(prevNotes =>
@@ -79,7 +83,10 @@ export const Context = (props: ContainerProps) => {
         notes,
         getItem,
         setGetItem,
-        getElement
+        getElement,
+        deleteItem,
+        openModal,
+        setOpenModal
     }
     return (
         <CustomContext.Provider value={value}>

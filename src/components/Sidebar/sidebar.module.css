@@ -26,3 +26,9 @@
     color: gray;
     font-size: 14px;
 }
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
