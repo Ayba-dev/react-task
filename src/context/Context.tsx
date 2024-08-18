@@ -19,6 +19,7 @@ interface TypeHooks {
     deleteItem: (id: string) => void;
     openModal : boolean,
     setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
+    updateNote: (id: string, content: string) => void
 }
 
 
@@ -62,13 +63,13 @@ export const Context = (props: ContainerProps) => {
         localStorage.removeItem('title')
     }
 
-    // const updateNote = (id: string, content: string) => {
-    //     setNotes(prevNotes =>
-    //         prevNotes.map(note =>
-    //             note.id === id ? {...note, content} : note
-    //         )
-    //     );
-    // };
+    const updateNote = (id: string, content: string) => {
+        const update = notes.map((item) => {
+            return item.id === id ? {...item, title: content} : item
+        })
+        setNotes(update)
+        setGetItem({...getItem, title: content})
+    };
 
 
     const value = {
@@ -86,7 +87,8 @@ export const Context = (props: ContainerProps) => {
         getElement,
         deleteItem,
         openModal,
-        setOpenModal
+        setOpenModal,
+        updateNote
     }
     return (
         <CustomContext.Provider value={value}>

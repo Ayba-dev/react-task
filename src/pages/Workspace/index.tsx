@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNotes} from "../../context/Context.tsx";
-import {Button} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 import {MdOutlineSystemUpdateAlt} from "react-icons/md";
 import styles from './workspace.module.css'
 import KeepMountedModal from "../../components/Modal";
+import {FaCheck} from "react-icons/fa";
+
 const WorkSpace = () => {
-    const {getItem} = useNotes()
+    const {getItem, updateNote} = useNotes()
+    const [change, setChange] = useState('');
+    const [openChange, setOpenChange] = useState(false);
+
+    const clickUpdate = () => {
+        updateNote(getItem.id, change)
+        setOpenChange(false)
+
+    }
     return (
         <div>
             <div className={styles.wrapper}>
@@ -13,13 +23,20 @@ const WorkSpace = () => {
                     getItem &&
                     <>
                         <KeepMountedModal/>
-                        <Button startIcon={<MdOutlineSystemUpdateAlt/>} variant="contained" color="success">
+                        <Button onClick={() => setOpenChange(!openChange)} startIcon={<MdOutlineSystemUpdateAlt/>}
+                                variant="contained" color="success">
                             Редактировать
                         </Button>
                     </>
                 }
             </div>
-            <h2>{getItem?.title}</h2>
+            {
+                !openChange ? <h2>{getItem?.title}</h2> :
+                    <div className={styles.check}>
+                        <TextField onChange={(e) => setChange(e.target.value)}/><FaCheck onClick={clickUpdate}
+                                                                                         size={40}/>
+                    </div>
+            }
         </div>
     )
         ;
