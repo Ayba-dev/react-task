@@ -53,9 +53,7 @@ export const Context = (props: ContainerProps) => {
 
     const getElement = (id: string) => {
         const element = notes.find((item) => item.id === id)
-        if (element) {
             setGetItem(element)
-        }
     }
     const deleteItem = (id) => {
         setNotes(prevState => prevState.filter((item) => item.id !== id))
@@ -75,8 +73,6 @@ export const Context = (props: ContainerProps) => {
     const value = {
         user,
         register,
-        // updateNote,
-        // deleteNote,
         setUser,
         title,
         setTitle,
